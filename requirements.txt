@@ -1,0 +1,4 @@
+pytz
+requests
+selenium
+webdriver-manager
