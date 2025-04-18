@@ -56,6 +56,11 @@ class LoginManager():
             EC.presence_of_element_located((by, id))
         )
 
+    def wait_for_disappear(self, element):
+        return WebDriverWait(self.driver, self.DEFAULT_TIMEOUT).until(
+            EC.invisibility_of_element(element)
+        )
+
     def go_to_mindbody_home(self) -> None:
         logging.info("Navigating to home page")
         self.driver.get(self.HOME_URL)
@@ -64,6 +69,7 @@ class LoginManager():
         logging.info("Waiting to accept cookies...")
         cookie_accept = self.wait_for(By.ID, "truste-consent-button")
         cookie_accept.click()
+        self.wait_for_disappear(cookie_accept)
         logging.info("Accepted cookies.")
 
     def go_to_login_page(self) -> None:
@@ -90,10 +96,13 @@ class LoginManager():
         sign_in.click()
 
         logging.info("Logged in. Waiting for cookies...")
-        time.sleep(1)
 
     def parse_access_token(self) -> str:
         user_session = self.driver.get_cookie("USER-SESSION")
+        while user_session is None:
+            time.sleep(.5)
+            user_session = self.driver.get_cookie("USER-SESSION")
+
         user_session_data = json.loads(unquote(user_session["value"]))
         access_token = user_session_data["accessToken"]
         logging.info("Found access token.")
