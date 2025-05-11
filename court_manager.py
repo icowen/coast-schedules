@@ -14,8 +14,6 @@ from requests.exceptions import HTTPError
 from mindbody_manager import LoginManager
 
 
-FILE_NAME = "court_availabilities.json"
-
 PACIFIC_TIMEZONE = timezone("US/Pacific")
 TIMESTAMP_FORMAT = "%Y-%m-%d %I:%M:%S %p"
 DATE_FMT = "%a %m/%d"
@@ -49,7 +47,6 @@ class CourtManager():
 
     def __init__(
         self,
-        file_name: str = FILE_NAME,
         wait_seconds: int = 15,
         login_manager: LoginManager = None,
         discord_client: discord.Client = None,
@@ -60,7 +57,6 @@ class CourtManager():
         self.discord_client = discord_client
 
         self.publish_to_discord = publish_to_discord
-        self.file_name = file_name
         self.wait_seconds = wait_seconds
 
         self.court_data = None
