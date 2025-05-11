@@ -1,3 +1,4 @@
+__pycache__/
 venv/
 court_availabilities.json
 .env
